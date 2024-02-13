@@ -8,6 +8,7 @@ import urllib.parse
 
 HTML_PATH = "./html"
 
+
 class HTTPRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         url = urllib.parse.urlparse(self.path)
