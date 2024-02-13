@@ -6,12 +6,13 @@ import socket
 import sys
 import urllib.parse
 
+HTML_PATH = "./html"
 
 class HTTPRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         url = urllib.parse.urlparse(self.path)
         url_path = url.path[1:] if url.path != "/" else "index.html"
-        path = Path().joinpath(url_path)
+        path = Path(HTML_PATH).joinpath(url_path)
 
         mt = mimetypes.guess_type(self.path)[0]
         if mt is None:
@@ -20,7 +21,7 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
         if path.exists():
             self.send_html_file(path, filetype=mt)
         else:
-            self.send_html_file("/error.html", status=404)
+            self.send_html_file(path.parent.joinpath("error.html"), status=404)
 
     def send_html_file(self, filename, status=200, filetype="text/html"):
         self.send_response(status)
